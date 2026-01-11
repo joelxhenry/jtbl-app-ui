@@ -9,6 +9,7 @@ import {
   LogIn,
   ChevronRight,
 } from "lucide-react";
+import GovBranding from "./GovBranding";
 
 interface ProfilePageProps {
   isAuthenticated: boolean;
@@ -164,10 +165,17 @@ export default function ProfilePage({
         </div>
       ))}
 
+      {/* Government Branding */}
+      <div className="px-4 pt-8 pb-4">
+        <GovBranding variant="dark" size="sm" showLabels />
+      </div>
+
       {/* App Info */}
-      <div className="px-4 pt-8 text-center text-xs text-muted-foreground">
+      <div className="px-4 pt-4 pb-2 text-center text-xs text-muted-foreground border-t border-border">
+        <p className="mb-2">An official application of the Government of Jamaica</p>
         <p>Pathway v1.0.0</p>
         <p className="mt-1">© 2026 Jamaica Trade Board Limited</p>
+        <p className="mt-1">Ministry of Industry, Investment and Commerce</p>
       </div>
     </div>
   );

@@ -1,12 +1,19 @@
+import GovBranding from "./GovBranding";
+
 interface SplashScreenProps {
   onComplete: () => void;
 }
 
 export default function SplashScreen({}: SplashScreenProps) {
   return (
-    <div className="fixed inset-0 z-[100] bg-primary flex flex-col items-center justify-center">
+    <div className="fixed inset-0 z-[100] bg-primary flex flex-col items-center justify-center px-6">
+      {/* Government Logos - Top */}
+      <div className="absolute top-12 animate-fade-in">
+        <GovBranding variant="light" size="md" />
+      </div>
+
       {/* Logo / Brand */}
-      <div className="animate-fade-in">
+      <div className="animate-fade-in text-center">
         <h1 className="text-4xl font-bold text-primary-foreground tracking-tight">
           Pathway
         </h1>
@@ -22,8 +29,11 @@ export default function SplashScreen({}: SplashScreenProps) {
 
       {/* Footer */}
       <div className="absolute bottom-8 text-center">
-        <p className="text-xs text-primary-foreground/50">
-          Developed by The Jamaica Trade Board Limited
+        <p className="text-xs text-primary-foreground/50 mb-2">
+          An official application of the Government of Jamaica
+        </p>
+        <p className="text-[10px] text-primary-foreground/40">
+          Ministry of Industry, Investment and Commerce
         </p>
       </div>
     </div>
