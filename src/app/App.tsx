@@ -25,8 +25,8 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setSplashFading(true);
-      setTimeout(() => setShowSplash(false), 400);
-    }, 5000);
+      setTimeout(() => setShowSplash(false), 400); // Match fade-out animation duration
+    }, 4000); // Display for 4 seconds
     return () => clearTimeout(timer);
   }, []);
 

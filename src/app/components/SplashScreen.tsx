@@ -2,19 +2,16 @@ interface SplashScreenProps {
   onComplete: () => void;
 }
 
-export default function SplashScreen({ onComplete }: SplashScreenProps) {
+export default function SplashScreen({}: SplashScreenProps) {
   return (
-    <div
-      className="fixed inset-0 z-[100] bg-primary flex flex-col items-center justify-center"
-      onAnimationEnd={onComplete}
-    >
+    <div className="fixed inset-0 z-[100] bg-primary flex flex-col items-center justify-center">
       {/* Logo / Brand */}
       <div className="animate-fade-in">
         <h1 className="text-4xl font-bold text-primary-foreground tracking-tight">
           Pathway
         </h1>
         <p className="text-primary-foreground/70 text-center text-sm mt-2">
-          Jamaica Trade Board
+          The Jamaica Trade Board
         </p>
       </div>
 
@@ -26,7 +23,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       {/* Footer */}
       <div className="absolute bottom-8 text-center">
         <p className="text-xs text-primary-foreground/50">
-          Developed by Jamaica Trade Board Limited
+          Developed by The Jamaica Trade Board Limited
         </p>
       </div>
     </div>
