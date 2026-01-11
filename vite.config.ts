@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  // Base path for GitHub Pages - update this to match your repo name
-  base: '/JTBL-Mobile-App-UI-Design/',
+  // Base path for GitHub Pages
+  base: '/jtbl-app-ui/',
   plugins: [
     // The React and Tailwind plugins are both required for Make, even if
     // Tailwind is not being actively used – do not remove them
