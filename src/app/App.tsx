@@ -131,9 +131,11 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <div className="flex flex-col h-screen w-full bg-background">
-      {/* Main Content Area */}
-      <main ref={mainRef} className="flex-1 overflow-y-auto pb-20 w-full">
+    <div className="min-h-screen w-full bg-muted/30 flex justify-center">
+      {/* Phone Container */}
+      <div className="flex flex-col h-screen w-full max-w-[430px] bg-background shadow-xl relative">
+        {/* Main Content Area */}
+        <main ref={mainRef} className="flex-1 overflow-y-auto pb-20 w-full">
         {currentPage === "home" && (
           <HomePage
             onNavigate={handleNavigate}
@@ -158,7 +160,7 @@ export default function App() {
       {!hideAiFab.includes(currentPage) && (
         <button
           onClick={() => handleNavigate("ai")}
-          className={`fixed right-4 z-50 w-12 h-12 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:bg-primary/90 ${
+          className={`absolute right-4 z-50 w-12 h-12 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:bg-primary/90 ${
             showFab ? "opacity-100" : "translate-y-20 opacity-0"
           } ${drawerOpen ? "bottom-44" : showDrawer && showDrawerIndicator ? "bottom-24" : "bottom-20"}`}
         >
@@ -167,7 +169,7 @@ export default function App() {
       )}
 
       {/* Bottom Navigation Bar with Quick Actions Drawer */}
-      <div className="fixed bottom-0 left-0 right-0 z-40">
+      <div className="absolute bottom-0 left-0 right-0 z-40">
         {/* Quick Actions Drawer - expands upward */}
         {showDrawer && (
           <div className="bg-white border-t border-border">
@@ -266,6 +268,7 @@ export default function App() {
           <SplashScreen onComplete={() => setShowSplash(false)} />
         </div>
       )}
+      </div>
     </div>
   );
 }

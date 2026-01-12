@@ -6,7 +6,7 @@ interface SplashScreenProps {
 
 export default function SplashScreen({}: SplashScreenProps) {
   return (
-    <div className="fixed inset-0 z-[100] bg-primary flex flex-col items-center justify-center px-6">
+    <div className="absolute inset-0 z-[100] bg-primary flex flex-col items-center justify-center px-6">
       {/* Government Logos - Top */}
       <div className="absolute top-12 animate-fade-in">
         <GovBranding variant="light" size="md" />
