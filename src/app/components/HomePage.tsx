@@ -144,20 +144,21 @@ export default function HomePage({ onNavigate, isAuthenticated }: HomePageProps)
         </div>
 
         {/* Category Pills */}
-        <div className="px-4 py-3">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+        <div className="py-3 overflow-x-auto scrollbar-hide">
+          <div className="flex justify-around">
             {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
-                  activeCategory === category.id
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {category.label}
-              </button>
+              <div key={category.id} className="px-2">
+                <button
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${activeCategory === category.id
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                    }`}
+                >
+                  {category.label}
+                </button>
+              </div>
+
             ))}
           </div>
         </div>
