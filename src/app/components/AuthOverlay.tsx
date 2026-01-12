@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Fingerprint } from "lucide-react";
+import { Fingerprint } from "lucide-react";
 
 interface AuthOverlayProps {
   onSuccess: () => void;
@@ -32,24 +32,26 @@ export default function AuthOverlay({ onSuccess, onCancel }: AuthOverlayProps) {
   };
 
   return (
-    <div className="absolute inset-0 z-50 flex items-end sm:items-center justify-center">
+    <div className="absolute inset-0 z-50 flex items-end justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/50 animate-fade-in"
         onClick={onCancel}
       />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-md bg-background rounded-t-2xl sm:rounded-2xl max-h-[90vh] overflow-y-auto">
+      {/* Drawer */}
+      <div className="relative w-full bg-background rounded-t-2xl max-h-[85vh] overflow-y-auto animate-slide-up">
+        {/* Drag Handle */}
+        <div
+          className="flex justify-center pt-3 pb-1 cursor-pointer"
+          onClick={onCancel}
+        >
+          <div className="w-10 h-1 bg-muted-foreground/30 rounded-full" />
+        </div>
+
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-border">
-          <p className="font-semibold">Sign In</p>
-          <button
-            onClick={onCancel}
-            className="p-2 hover:bg-muted rounded-full transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        <div className="px-4 py-3 border-b border-border">
+          <p className="font-semibold text-center">Sign In</p>
         </div>
 
         {/* Content */}

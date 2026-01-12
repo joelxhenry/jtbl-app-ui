@@ -1,9 +1,18 @@
-import { useState } from "react";
-import { Search, MapPin, Phone, Mail, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, MapPin, Phone, Mail, ChevronRight, Clock, Globe, Navigation } from "lucide-react";
 
-export default function SearchPage() {
+interface SearchPageProps {
+  initialTab?: "lpc" | "dealers" | "psi";
+}
+
+export default function SearchPage({ initialTab = "lpc" }: SearchPageProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"lpc" | "dealers">("lpc");
+  const [activeTab, setActiveTab] = useState<"lpc" | "dealers" | "psi">(initialTab);
+
+  // Update tab when initialTab prop changes
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
 
   const lpcResults = [
     {
@@ -62,9 +71,68 @@ export default function SearchPage() {
     },
   ];
 
+  const psiLocations = [
+    {
+      id: 1,
+      name: "Bureau Veritas Jamaica",
+      address: "17 Ruthven Road, Kingston 10",
+      parish: "Kingston",
+      phone: "+1-876-968-5890",
+      email: "jamaica@bureauveritas.com",
+      website: "www.bureauveritas.com",
+      hours: "Mon-Fri: 8:00 AM - 4:30 PM",
+      services: ["Vehicle Inspection", "Cargo Inspection", "Certificate Issuance"],
+    },
+    {
+      id: 2,
+      name: "SGS Jamaica Limited",
+      address: "14 Camp Road, Kingston",
+      parish: "Kingston",
+      phone: "+1-876-928-4416",
+      email: "sgs.jamaica@sgs.com",
+      website: "www.sgs.com",
+      hours: "Mon-Fri: 8:00 AM - 5:00 PM",
+      services: ["Vehicle Inspection", "Industrial Equipment", "Agricultural Products"],
+    },
+    {
+      id: 3,
+      name: "Intertek Jamaica",
+      address: "Shop 5, Portmore Mall, Portmore",
+      parish: "St. Catherine",
+      phone: "+1-876-939-2156",
+      email: "jamaica@intertek.com",
+      website: "www.intertek.com",
+      hours: "Mon-Sat: 9:00 AM - 5:00 PM",
+      services: ["Vehicle Inspection", "Consumer Goods", "Electronics"],
+    },
+    {
+      id: 4,
+      name: "COTECNA Jamaica",
+      address: "Newport West, Kingston",
+      parish: "Kingston",
+      phone: "+1-876-923-7890",
+      email: "jamaica@cotecna.com",
+      website: "www.cotecna.com",
+      hours: "Mon-Fri: 8:30 AM - 4:00 PM",
+      services: ["Vehicle Inspection", "Trade Inspection", "Conformity Assessment"],
+    },
+    {
+      id: 5,
+      name: "Bureau Veritas - Montego Bay",
+      address: "Fairview Shopping Centre, Montego Bay",
+      parish: "St. James",
+      phone: "+1-876-953-2345",
+      email: "mobay@bureauveritas.com",
+      website: "www.bureauveritas.com",
+      hours: "Mon-Fri: 8:00 AM - 4:00 PM",
+      services: ["Vehicle Inspection", "Cargo Inspection"],
+    },
+  ];
+
   const tabs = [
     { id: "lpc" as const, label: "Products" },
     { id: "dealers" as const, label: "Dealers" },
+    { id: "psi" as const, label: "PSI Locations" },
   ];
 
   return (
@@ -167,6 +235,67 @@ export default function SearchPage() {
                   <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">
                     License: {dealer.license}
                   </p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* PSI Locations */}
+        {activeTab === "psi" && (
+          <>
+            <div className="px-4 py-3 text-xs text-muted-foreground">
+              {psiLocations.length} inspection providers
+            </div>
+            <div className="divide-y divide-border">
+              {psiLocations.map((location) => (
+                <div key={location.id} className="px-4 py-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="font-medium">{location.name}</p>
+                      <p className="text-xs text-muted-foreground">{location.parish}</p>
+                    </div>
+                    <button className="p-2 bg-primary/10 rounded-full text-primary">
+                      <Navigation className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-start gap-2 text-muted-foreground">
+                      <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{location.address}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="w-4 h-4 flex-shrink-0" />
+                      <span>{location.hours}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Phone className="w-4 h-4 flex-shrink-0" />
+                      <span>{location.phone}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Mail className="w-4 h-4 flex-shrink-0" />
+                      <span>{location.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Globe className="w-4 h-4 flex-shrink-0" />
+                      <span>{location.website}</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <p className="text-xs text-muted-foreground mb-2">Services:</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {location.services.map((service, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 bg-muted text-xs text-muted-foreground rounded"
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
