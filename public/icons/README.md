@@ -16,9 +16,10 @@ Add the following PNG icons to this folder for full PWA support:
 - `icon-384x384.png`
 
 ## Icon Guidelines
-- Use the Pathway "P" logo on the golden yellow (#f5b32b) background
+- Use the Pathway "P" logo with white text on navy blue (#0a2540) background
 - Icons should be square with rounded corners for maskable icons
 - Ensure sufficient padding for maskable icons (safe zone is inner 80%)
+- The accent color yellow (#f5b32b) can be used for highlights if needed
 
 ## Generate Icons
 You can use tools like:
