@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 3836 1322" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+<svg width="100%" height="100%" viewBox="0 0 3896 1322" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(1,0,0,1,-535.551825,-983.320866)">
         <g transform="matrix(0.995094,0,0,1.129477,535.551825,983.320866)">
             <rect x="0" y="0" width="1990" height="1170" style="fill:none;"/>
@@ -14,10 +14,10 @@
             </g>
         </g>
         <g transform="matrix(6.694506,0,0,6.694506,-14458.971232,-7901.698351)">
-            <text x="2535.125px" y="1420.506px" style="font-family:'GeneralSans-Semibold', 'General Sans';font-weight:600;font-size:50px;">Jamaica</text>
-            <g transform="matrix(50,0,0,50,2816.225492,1467.913682)">
+            <text x="2535.125px" y="1420.506px" style="font-family:'GeneralSans-Regular', 'General Sans';font-size:50px;">Jamaica</text>
+            <g transform="matrix(50,0,0,50,2824.775492,1467.913682)">
             </g>
-            <text x="2535.125px" y="1467.914px" style="font-family:'GeneralSans-Medium', 'General Sans';font-weight:500;font-size:50px;">T<tspan x="2563.925px " y="1467.914px ">r</tspan>ade Board</text>
+            <text x="2535.125px" y="1467.914px" style="font-family:'GeneralSans-Semibold', 'General Sans';font-weight:600;font-size:50px;">T<tspan x="2565.325px " y="1467.914px ">r</tspan>ade Boar<tspan x="2793.675px " y="1467.914px ">d</tspan></text>
         </g>
     </g>
     <defs>
