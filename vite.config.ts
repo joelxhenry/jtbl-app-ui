@@ -19,7 +19,7 @@ export default defineConfig({
         name: 'Pathway - Jamaica Trade Board',
         short_name: 'Pathway',
         description: 'Official Jamaica Trade Board Limited mobile application for trade services, PSI certificates, and JSWIFT access.',
-        theme_color: '#f5b32b',
+        theme_color: '#0a2540',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
