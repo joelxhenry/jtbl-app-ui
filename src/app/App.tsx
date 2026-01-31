@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Home, TrendingUp, Bell, Search, User, Sparkles, MapPin, FileText, Menu, Navigation } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Home, TrendingUp, Bell, Search, Sparkles, MapPin, FileText, Menu, X, BookOpen, Info, HelpCircle, ChevronRight, Bookmark } from "lucide-react";
 
 // Import pages
 import HomePage from "./components/HomePage";
@@ -10,17 +10,58 @@ import ProfilePage from "./components/ProfilePage";
 import NotificationsPage from "./components/NotificationsPage";
 import PSIPage from "./components/PSIPage";
 import JswiftPage from "./components/JswiftPage";
-import AuthOverlay from "./components/AuthOverlay";
+import HelpSupportPage from "./components/HelpSupportPage";
+import PostViewPage from "./components/PostViewPage";
+import BookmarksPage from "./components/BookmarksPage";
 import SplashScreen from "./components/SplashScreen";
+
+// Media item type for posts
+interface MediaItem {
+  type: "image" | "video";
+  url: string;
+  thumbnail?: string;
+  caption?: string;
+  videoId?: string;
+  platform?: "youtube" | "vimeo";
+}
+
+// Post type for viewing
+interface Post {
+  id: number;
+  title: string;
+  category: string;
+  date: string;
+  author?: string;
+  readTime?: string;
+  image?: string;
+  media?: MediaItem[];
+  content?: string;
+}
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showAuthOverlay, setShowAuthOverlay] = useState(false);
-  const [pendingFeature, setPendingFeature] = useState<string | null>(null);
+  const [previousPage, setPreviousPage] = useState("home");
   const [showSplash, setShowSplash] = useState(true);
   const [splashFading, setSplashFading] = useState(false);
-  const [searchTab, setSearchTab] = useState<"lpc" | "dealers" | "psi">("lpc");
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+
+  // Handle saving/unsaving posts
+  const handleToggleSave = (post: Post) => {
+    setSavedPosts((prev: Post[]) => {
+      const exists = prev.some((p: Post) => p.id === post.id);
+      if (exists) {
+        return prev.filter((p: Post) => p.id !== post.id);
+      }
+      return [...prev, post];
+    });
+  };
+
+  const handleRemoveBookmark = (postId: number) => {
+    setSavedPosts((prev: Post[]) => prev.filter((p: Post) => p.id !== postId));
+  };
+
+  const isPostSaved = (postId: number) => savedPosts.some((p: Post) => p.id === postId);
 
   // Auto-hide splash screen after delay
   useEffect(() => {
@@ -31,222 +72,304 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle navigation with authentication check
-  const handleNavigate = (page: string, requiresAuth: boolean = false) => {
-    if (requiresAuth && !isAuthenticated) {
-      setPendingFeature(page);
-      setShowAuthOverlay(true);
-    } else {
-      setCurrentPage(page);
-    }
+  // Handle navigation
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page);
+    setSelectedPost(null);
   };
 
-  const handleAuthSuccess = () => {
-    setIsAuthenticated(true);
-    setShowAuthOverlay(false);
-    if (pendingFeature) {
-      setCurrentPage(pendingFeature);
-      setPendingFeature(null);
-    }
+  // Handle post click
+  const handlePostClick = (post: Post) => {
+    setPreviousPage(currentPage);
+    setSelectedPost(post);
+    setCurrentPage("post");
   };
 
-  const handleAuthCancel = () => {
-    setShowAuthOverlay(false);
-    setPendingFeature(null);
+  // Handle back from post
+  const handleBackFromPost = () => {
+    setSelectedPost(null);
+    setCurrentPage(previousPage);
   };
 
   const navItems = [
     { id: "home", icon: Home, label: "Home" },
+    { id: "search", icon: Search, label: "Search" },
     { id: "market", icon: TrendingUp, label: "Market" },
-    { id: "menu", icon: Menu, label: "Services" },
     { id: "notifications", icon: Bell, label: "Alerts" },
-    { id: "profile", icon: User, label: "More" },
   ];
 
-  // Pages that hide AI FAB
-  const hideAiFab = ["ai", "psi", "jswift"];
+  // Left drawer state
+  const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
 
-  // Drawer state for quick actions menu
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // Resources section for left drawer
+  const resourcesItems = [
+    { id: "academy", icon: BookOpen, label: "ExportAcademy", badge: "New" },
+    { id: "about", icon: Info, label: "About Pathway", badge: null },
+    { id: "help", icon: HelpCircle, label: "Help & Support", badge: null },
+  ];
 
-  // Quick actions for drawer
+  // Quick actions for left drawer
   const quickActions = [
-    { id: "search", icon: Search, label: "Local Search" },
-    { id: "psi-locations", icon: Navigation, label: "PSI Locations" },
     { id: "psi", icon: MapPin, label: "PSI Lookup" },
     { id: "jswift", icon: FileText, label: "JSWIFT" },
+    { id: "bookmarks", icon: Bookmark, label: "Saved Posts" },
   ];
-
-  // Floating button scroll detection
-  const [showFab, setShowFab] = useState(true);
-  const lastScrollY = useRef(0);
-  const mainRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const main = mainRef.current;
-    if (!main) return;
-
-    const handleScroll = () => {
-      const currentScrollY = main.scrollTop;
-      const scrollDelta = currentScrollY - lastScrollY.current;
-
-      if (Math.abs(scrollDelta) < 5) return;
-
-      // Check if content is actually scrollable
-      const isScrollable = main.scrollHeight > main.clientHeight;
-
-      if (!isScrollable) {
-        setShowFab(true);
-        return;
-      }
-
-      if (currentScrollY <= 10) {
-        setShowFab(true);
-      } else if (scrollDelta < 0) {
-        setShowFab(true);
-      } else if (scrollDelta > 0) {
-        setShowFab(false);
-        setDrawerOpen(false);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    main.addEventListener("scroll", handleScroll, { passive: true });
-    return () => main.removeEventListener("scroll", handleScroll);
-  }, [currentPage]);
 
   // Reset drawer state when changing pages
   useEffect(() => {
-    setDrawerOpen(false);
-    lastScrollY.current = 0;
+    setLeftDrawerOpen(false);
   }, [currentPage]);
 
   return (
     <div className="min-h-screen w-full bg-muted/30 flex justify-center">
       {/* Phone Container */}
       <div className="flex flex-col h-screen w-full max-w-[430px] bg-background shadow-xl relative">
+        {/* Header Bar - Hidden when viewing a post */}
+        {currentPage !== "post" && (
+          <header className="flex items-center justify-between px-4 h-14 bg-background z-40">
+            <button
+              onClick={() => setLeftDrawerOpen(true)}
+              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            {currentPage === "home" ? (
+              <img src={`${import.meta.env.BASE_URL}logos/logo.svg`} alt="Pathway" className="h-8" />
+            ) : (
+              <h1 className="font-semibold text-lg">
+                {currentPage === "search" && "Search"}
+                {currentPage === "market" && "Market Intel"}
+                {currentPage === "notifications" && "Notifications"}
+                {currentPage === "ai" && "AI Assistant"}
+                {currentPage === "psi" && "PSI Lookup"}
+                {currentPage === "jswift" && "JSWIFT"}
+                {currentPage === "profile" && "Profile"}
+                {currentPage === "help" && "Help & Support"}
+                {currentPage === "about" && "About Pathway"}
+                {currentPage === "academy" && "ExportAcademy"}
+                {currentPage === "bookmarks" && "Saved Posts"}
+              </h1>
+            )}
+            {currentPage === "home" ? (
+              <button
+                onClick={() => handleNavigate("notifications")}
+                className="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors"
+              >
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full" />
+              </button>
+            ) : (
+              <div className="w-10 h-10" />
+            )}
+          </header>
+        )}
+
+        {/* Left Drawer Overlay */}
+        {leftDrawerOpen && (
+          <>
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/50 z-50 animate-fade-in"
+              onClick={() => setLeftDrawerOpen(false)}
+            />
+
+            {/* Left Drawer */}
+            <div className="absolute top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-background z-50 animate-slide-in-left flex flex-col">
+              {/* Drawer Header */}
+              <div className="px-4 py-6 border-b border-border">
+                <div className="flex items-center justify-between">
+                  <p className="text-lg font-semibold">Menu</p>
+                  <button
+                    onClick={() => setLeftDrawerOpen(false)}
+                    className="p-2 hover:bg-muted rounded-full transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Drawer Content */}
+              <div className="flex-1 overflow-y-auto">
+                {/* Services Section */}
+                <div className="mt-4">
+                  <p className="px-4 text-xs text-muted-foreground mb-2">Services</p>
+                  <div className="divide-y divide-border">
+                    {quickActions.map((action) => {
+                      const Icon = action.icon;
+                      return (
+                        <button
+                          key={action.id}
+                          onClick={() => {
+                            handleNavigate(action.id);
+                            setLeftDrawerOpen(false);
+                          }}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-muted/50 transition-colors"
+                        >
+                          <Icon className="w-5 h-5 text-muted-foreground" />
+                          <span className="flex-1 text-left text-sm">{action.label}</span>
+                          <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Resources Section */}
+                <div className="mt-4">
+                  <p className="px-4 text-xs text-muted-foreground mb-2">Resources</p>
+                  <div className="divide-y divide-border">
+                    {resourcesItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            handleNavigate(item.id);
+                            setLeftDrawerOpen(false);
+                          }}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-muted/50 transition-colors"
+                        >
+                          <Icon className="w-5 h-5 text-muted-foreground" />
+                          <span className="flex-1 text-left text-sm">{item.label}</span>
+                          {item.badge && (
+                            <span className="text-xs text-primary font-medium">
+                              {item.badge}
+                            </span>
+                          )}
+                          <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Drawer Footer */}
+              <div className="px-4 py-4 border-t border-border text-center text-xs text-muted-foreground">
+                <img src={`${import.meta.env.BASE_URL}logos/logo.svg`} alt="Pathway" className="h-6 mx-auto mb-2" />
+                <p>v1.0.0</p>
+                <p className="mt-1">© 2026 Jamaica Trade Board Limited</p>
+              </div>
+            </div>
+          </>
+        )}
+
         {/* Main Content Area */}
-        <main ref={mainRef} className="flex-1 overflow-y-auto pb-20 w-full">
+        <main className={`flex-1 overflow-y-auto w-full ${currentPage !== "post" ? "pb-20" : ""}`}>
         {currentPage === "home" && (
           <HomePage
-            onNavigate={handleNavigate}
-            isAuthenticated={isAuthenticated}
+            onPostClick={handlePostClick}
+            onToggleSave={handleToggleSave}
+            isPostSaved={isPostSaved}
           />
+        )}
+        {currentPage === "post" && selectedPost && (
+          <PostViewPage post={selectedPost} onBack={handleBackFromPost} />
         )}
         {currentPage === "market" && <MarketIntelPage />}
         {currentPage === "ai" && <AIAssistantPage />}
-        {currentPage === "search" && <SearchPage initialTab={searchTab} />}
+        {currentPage === "search" && <SearchPage />}
         {currentPage === "notifications" && <NotificationsPage />}
         {currentPage === "psi" && <PSIPage />}
         {currentPage === "jswift" && <JswiftPage />}
-        {currentPage === "profile" && (
-          <ProfilePage
-            isAuthenticated={isAuthenticated}
-            onLoginRequest={() => setShowAuthOverlay(true)}
+        {currentPage === "profile" && <ProfilePage />}
+        {currentPage === "help" && <HelpSupportPage />}
+        {currentPage === "bookmarks" && (
+          <BookmarksPage
+            savedPosts={savedPosts}
+            onPostClick={handlePostClick}
+            onRemoveBookmark={handleRemoveBookmark}
           />
         )}
       </main>
 
-      {/* Floating AI Button */}
-      {!hideAiFab.includes(currentPage) && (
-        <button
-          onClick={() => handleNavigate("ai")}
-          className={`absolute right-4 z-50 w-12 h-12 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:bg-primary/90 ${
-            showFab ? "opacity-100" : "translate-y-20 opacity-0"
-          } ${drawerOpen ? "bottom-52" : "bottom-20"}`}
-        >
-          <Sparkles className="w-5 h-5" />
-        </button>
-      )}
-
-      {/* Bottom Navigation Bar with Quick Actions Drawer */}
+      {/* Bottom Navigation Bar with Center FAB - Hidden when viewing a post */}
+      {currentPage !== "post" && (
       <div className="absolute bottom-0 left-0 right-0 z-40">
-        {/* Quick Actions Drawer - expands upward */}
-        <div className="bg-white border-t border-border">
-          {/* Quick Actions Content - slides up */}
-          <div
-            className={`overflow-hidden transition-all duration-300 ease-in-out ${
-              drawerOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
-            }`}
-          >
-            <div className="px-4 py-3">
-              <div className="grid grid-cols-4 gap-2">
-                {quickActions.map((action) => {
-                  const Icon = action.icon;
-                  return (
-                    <button
-                      key={action.id}
-                      onClick={() => {
-                        if (action.id === "jswift") {
-                          if (isAuthenticated) {
-                            handleNavigate("jswift");
-                          } else {
-                            setPendingFeature("jswift");
-                            setShowAuthOverlay(true);
-                          }
-                        } else if (action.id === "psi") {
-                          handleNavigate("psi");
-                        } else if (action.id === "psi-locations") {
-                          setSearchTab("psi");
-                          handleNavigate("search");
-                        } else {
-                          setSearchTab("lpc");
-                          handleNavigate("search");
-                        }
-                        setDrawerOpen(false);
-                      }}
-                      className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-foreground" />
-                      </div>
-                      <span className="text-[10px] font-medium text-foreground text-center leading-tight">{action.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Curved background behind FAB */}
+        <div className="absolute left-1/2 -translate-x-1/2 -top-4 w-20 h-10 bg-background rounded-t-full" />
 
-        {/* Navigation Bar */}
-        <nav className="bg-white border-t border-border">
-          <div className="flex items-center justify-around h-14 max-w-screen-xl mx-auto">
-            {navItems.map((item) => {
+        <nav className="bg-background/95 backdrop-blur-sm border-t border-border relative">
+          <div className="flex items-center justify-around h-16 px-2">
+            {/* Left nav items */}
+            {navItems.slice(0, 2).map((item) => {
               const Icon = item.icon;
-              const isActive = item.id === "menu" ? drawerOpen : currentPage === item.id;
+              const isActive = currentPage === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => {
-                    if (item.id === "menu") {
-                      setDrawerOpen(!drawerOpen);
-                    } else {
-                      setDrawerOpen(false);
-                      handleNavigate(item.id);
-                    }
-                  }}
-                  className={`flex items-center justify-center w-12 h-12 rounded-full transition-colors ${
-                    isActive
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                  }`}
+                  onClick={() => handleNavigate(item.id)}
+                  className="flex flex-col items-center justify-center min-w-[64px] py-1 transition-all"
                 >
-                  <Icon className="w-6 h-6" />
+                  <div className={`p-1.5 rounded-full transition-all ${
+                    isActive ? "bg-primary/10" : ""
+                  }`}>
+                    <Icon className={`w-5 h-5 transition-colors ${
+                      isActive ? "text-primary" : "text-muted-foreground"
+                    }`} />
+                  </div>
+                  <span className={`text-[10px] mt-0.5 font-medium transition-colors ${
+                    isActive ? "text-primary" : "text-muted-foreground"
+                  }`}>
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+
+            {/* Center FAB spacer */}
+            <div className="w-20" />
+
+            {/* Right nav items */}
+            {navItems.slice(2).map((item) => {
+              const Icon = item.icon;
+              const isActive = currentPage === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavigate(item.id)}
+                  className="flex flex-col items-center justify-center min-w-[64px] py-1 transition-all"
+                >
+                  <div className={`relative p-1.5 rounded-full transition-all ${
+                    isActive ? "bg-primary/10" : ""
+                  }`}>
+                    <Icon className={`w-5 h-5 transition-colors ${
+                      isActive ? "text-primary" : "text-muted-foreground"
+                    }`} />
+                    {/* Notification dot for Alerts */}
+                    {item.id === "notifications" && (
+                      <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-destructive rounded-full" />
+                    )}
+                  </div>
+                  <span className={`text-[10px] mt-0.5 font-medium transition-colors ${
+                    isActive ? "text-primary" : "text-muted-foreground"
+                  }`}>
+                    {item.label}
+                  </span>
                 </button>
               );
             })}
           </div>
+
+          {/* Center Floating AI Button */}
+          <button
+            onClick={() => handleNavigate("ai")}
+            className={`absolute left-1/2 -translate-x-1/2 -top-7 w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center transition-all ${
+              currentPage === "ai"
+                ? "bg-primary text-primary-foreground ring-4 ring-primary/20"
+                : "bg-primary text-primary-foreground hover:shadow-xl hover:scale-105"
+            }`}
+          >
+            <Sparkles className={`w-6 h-6 ${currentPage === "ai" ? "animate-pulse" : ""}`} />
+          </button>
+          {/* AI Label */}
+          <span className={`absolute left-1/2 -translate-x-1/2 bottom-1 text-[10px] font-medium transition-colors ${
+            currentPage === "ai" ? "text-primary" : "text-muted-foreground"
+          }`}>
+            AI
+          </span>
         </nav>
       </div>
-
-      {/* Authentication Overlay */}
-      {showAuthOverlay && (
-        <AuthOverlay
-          onSuccess={handleAuthSuccess}
-          onCancel={handleAuthCancel}
-        />
       )}
 
       {/* Splash Screen */}
