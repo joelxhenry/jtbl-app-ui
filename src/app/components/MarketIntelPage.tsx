@@ -405,7 +405,7 @@ export default function MarketIntelPage() {
               }}
               onFocus={() => setShowDestinationDropdown(true)}
               placeholder="Search destination country..."
-              className="w-full pl-10 pr-10 py-3 bg-muted rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+              className="w-full pl-10 pr-10 py-3 glass rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
             />
             {(selectedDestination || destinationQuery) && (
               <button
@@ -463,7 +463,7 @@ export default function MarketIntelPage() {
               }}
               onFocus={() => setShowProductDropdown(true)}
               placeholder="Search product or HS code..."
-              className="w-full pl-10 pr-10 py-3 bg-muted rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+              className="w-full pl-10 pr-10 py-3 glass rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
             />
             {(selectedProduct || productQuery) && (
               <button

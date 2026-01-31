@@ -39,6 +39,30 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Glass Blur Levels */
+  --glass-blur-sm: 8px;
+  --glass-blur-md: 16px;
+  --glass-blur-lg: 24px;
+  --glass-blur-xl: 40px;
+
+  /* Glass Backgrounds (Light Mode) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.5);
+  --glass-bg-strong: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-border-subtle: rgba(255, 255, 255, 0.15);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #0a2540 0%, #1a3a5c 50%, #0f3052 100%);
+  --gradient-primary-light: linear-gradient(135deg, #0a2540 0%, #163654 100%);
+  --gradient-accent: linear-gradient(135deg, #f5b32b 0%, #ffc847 50%, #f5a623 100%);
+  --gradient-accent-subtle: linear-gradient(135deg, #f5b32b 0%, #f8c34a 100%);
+  --gradient-bg-subtle: linear-gradient(180deg, rgba(10, 37, 64, 0.02) 0%, rgba(10, 37, 64, 0.05) 100%);
+
+  /* Glass Shadow */
+  --glass-shadow: 0 4px 16px rgba(10, 37, 64, 0.08);
+  --glass-shadow-elevated: 0 8px 32px rgba(10, 37, 64, 0.12);
 }
 
 .dark {
@@ -76,6 +100,17 @@
   --sidebar-accent-foreground: #000000;
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+
+  /* Glass Backgrounds (Dark Mode) */
+  --glass-bg: rgba(30, 30, 30, 0.7);
+  --glass-bg-subtle: rgba(30, 30, 30, 0.5);
+  --glass-bg-strong: rgba(30, 30, 30, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-subtle: rgba(255, 255, 255, 0.05);
+
+  /* Dark Mode Glass Shadows */
+  --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --glass-shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 @theme inline {
@@ -117,6 +152,13 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Glass Colors */
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-bg-subtle: var(--glass-bg-subtle);
+  --color-glass-bg-strong: var(--glass-bg-strong);
+  --color-glass-border: var(--glass-border);
+  --color-glass-border-subtle: var(--glass-border-subtle);
 }
 
 @layer base {
@@ -287,4 +329,150 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ================================================
+   GLASSMORPHISM UTILITIES
+   ================================================ */
+
+/* Base Glass Effect */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-sm {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-lg {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+  border: 1px solid var(--glass-border);
+}
+
+/* Glass Card (with subtle shadow) */
+.glass-card {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-lg);
+}
+
+/* Glass Card Elevated */
+.glass-card-elevated {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-elevated);
+  border-radius: var(--radius-lg);
+}
+
+/* Glass Navigation (for bottom nav, headers) */
+.glass-nav {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-xl));
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl));
+}
+
+/* Glass Input */
+.glass-input {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  border: 1px solid var(--glass-border);
+}
+
+/* Glass Panel (for sidebars, drawers) */
+.glass-panel {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-xl));
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl));
+  border: 1px solid var(--glass-border-subtle);
+}
+
+/* ================================================
+   GRADIENT UTILITIES
+   ================================================ */
+
+/* Primary Gradients */
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-primary-light {
+  background: var(--gradient-primary-light);
+}
+
+/* Accent Gradients */
+.gradient-accent {
+  background: var(--gradient-accent);
+}
+
+.gradient-accent-subtle {
+  background: var(--gradient-accent-subtle);
+}
+
+/* Background Gradients */
+.gradient-bg-subtle {
+  background: var(--gradient-bg-subtle);
+}
+
+/* Gradient Text */
+.gradient-text-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Button Gradient Variants */
+.btn-gradient-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+}
+
+.btn-gradient-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-gradient-accent {
+  background: var(--gradient-accent);
+  color: #000000;
+  border: none;
+}
+
+.btn-gradient-accent:hover {
+  filter: brightness(1.05);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass,
+  .glass-sm,
+  .glass-lg,
+  .glass-card,
+  .glass-card-elevated,
+  .glass-nav,
+  .glass-input,
+  .glass-panel {
+    background: var(--glass-bg-strong);
+  }
 }

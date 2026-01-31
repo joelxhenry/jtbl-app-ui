@@ -126,7 +126,7 @@ export default function App() {
       <div className="flex flex-col h-screen w-full max-w-[430px] bg-background shadow-xl relative">
         {/* Header Bar - Hidden when viewing a post */}
         {currentPage !== "post" && (
-          <header className="flex items-center justify-between px-4 h-14 bg-background z-40">
+          <header className="flex items-center justify-between px-4 h-14 glass-nav border-b border-glass-border-subtle z-40">
             <button
               onClick={() => setLeftDrawerOpen(true)}
               className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors"
@@ -174,7 +174,7 @@ export default function App() {
             />
 
             {/* Left Drawer */}
-            <div className="absolute top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-background z-50 animate-slide-in-left flex flex-col">
+            <div className="absolute top-0 left-0 bottom-0 w-[85%] max-w-[320px] glass-panel z-50 animate-slide-in-left flex flex-col">
               {/* Drawer Header */}
               <div className="px-4 py-6 border-b border-border">
                 <div className="flex items-center justify-between">
@@ -287,9 +287,9 @@ export default function App() {
       {currentPage !== "post" && (
       <div className="absolute bottom-0 left-0 right-0 z-40">
         {/* Curved background behind FAB */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-4 w-20 h-10 bg-background rounded-t-full" />
+        <div className="absolute left-1/2 -translate-x-1/2 -top-4 w-20 h-10 glass-lg rounded-t-full" />
 
-        <nav className="bg-background/95 backdrop-blur-sm border-t border-border relative">
+        <nav className="glass-nav border-t border-glass-border-subtle relative">
           <div className="flex items-center justify-around h-16 px-2">
             {/* Left nav items */}
             {navItems.slice(0, 2).map((item) => {
@@ -356,8 +356,8 @@ export default function App() {
             onClick={() => handleNavigate("ai")}
             className={`absolute left-1/2 -translate-x-1/2 -top-7 w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center transition-all ${
               currentPage === "ai"
-                ? "bg-primary text-primary-foreground ring-4 ring-primary/20"
-                : "bg-primary text-primary-foreground hover:shadow-xl hover:scale-105"
+                ? "gradient-primary text-white ring-4 ring-primary/20"
+                : "gradient-primary text-white hover:shadow-xl hover:scale-105"
             }`}
           >
             <Sparkles className={`w-6 h-6 ${currentPage === "ai" ? "animate-pulse" : ""}`} />

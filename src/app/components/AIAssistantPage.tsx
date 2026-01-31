@@ -164,7 +164,7 @@ export default function AIAssistantPage() {
       {/* Modern Input Area */}
       <div className="px-4 py-3 border-t border-border">
         <div className="max-w-2xl mx-auto">
-          <div className="relative bg-muted rounded-2xl">
+          <div className="relative glass-card">
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -181,7 +181,7 @@ export default function AIAssistantPage() {
             <button
               onClick={handleSendMessage}
               disabled={!inputText.trim()}
-              className="absolute right-3 bottom-3 w-9 h-9 bg-primary text-primary-foreground rounded-full flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-primary/90 transition-all"
+              className="absolute right-3 bottom-3 w-9 h-9 gradient-primary text-white rounded-full flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:brightness-110 transition-all"
             >
               <ArrowUp className="w-5 h-5" />
             </button>

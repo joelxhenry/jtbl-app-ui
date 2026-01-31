@@ -198,14 +198,14 @@ export default function HomePage({ onPostClick, onToggleSave, isPostSaved }: Hom
   return (
     <div className="min-h-full bg-background">
       {/* Category Pills */}
-      <div className="sticky top-0 z-10 bg-background border-b border-border py-3 overflow-x-auto scrollbar-hide">
+      <div className="sticky top-0 z-10 glass-nav border-b border-glass-border-subtle py-3 overflow-x-auto scrollbar-hide">
         <div className="flex justify-around">
           {categories.map((category) => (
             <div key={category.id} className="px-2">
               <button
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${activeCategory === category.id
-                    ? "bg-primary text-primary-foreground"
+                    ? "gradient-primary text-white"
                     : "bg-muted text-muted-foreground"
                   }`}
               >

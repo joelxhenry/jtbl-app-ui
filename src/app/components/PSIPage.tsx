@@ -146,7 +146,7 @@ export default function PSIPage() {
               onChange={(e) => setChassisNumber(e.target.value.toUpperCase())}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               placeholder="Enter chassis number..."
-              className="w-full pl-10 pr-10 py-3 bg-muted rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm font-mono"
+              className="w-full pl-10 pr-10 py-3 glass rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm font-mono"
             />
             {chassisNumber && (
               <button
@@ -159,7 +159,7 @@ export default function PSIPage() {
           </div>
           <button
             onClick={() => setShowScanner(true)}
-            className="p-3 bg-muted rounded-xl hover:bg-muted/80 transition-colors"
+            className="p-3 glass rounded-xl hover:brightness-105 transition-all"
           >
             <QrCode className="w-5 h-5" />
           </button>
@@ -168,7 +168,7 @@ export default function PSIPage() {
         <button
           onClick={handleSearch}
           disabled={!chassisNumber.trim() || isSearching}
-          className="w-full mt-3 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full mt-3 py-3 gradient-primary text-white rounded-xl font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSearching ? (
             <>
